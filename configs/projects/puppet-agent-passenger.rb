@@ -4,8 +4,8 @@ project "puppet-agent-passenger" do |proj|
   proj.setting(:sysconfdir, "/etc/puppetlabs")
   proj.setting(:puppet_configdir, File.join(proj.sysconfdir, 'puppet'))
   proj.setting(:puppet_codedir, "/etc/puppetlabs/code")
-  proj.setting(:logdir, "/var/log/puppetlabs")
-  proj.setting(:piddir, "/var/run/puppetlabs")
+  proj.setting(:logdir, "/var/log/puppetlabs/puppetmaster")
+  proj.setting(:piddir, "/var/run/puppetlabs/puppetmaster")
   proj.setting(:bindir, File.join(proj.prefix, "bin"))
   proj.setting(:link_bindir, "/opt/puppetlabs/bin")
   proj.setting(:libdir, File.join(proj.prefix, "lib"))
@@ -20,6 +20,15 @@ project "puppet-agent-passenger" do |proj|
   proj.vendor "Puppet Labs <info@puppetlabs.com>"
   proj.homepage "https://www.puppetlabs.com"
 
+  proj.requires "puppet-agent"
+  proj.requires "httpd"
+  proj.requires "openssl"
+  proj.requires "mod_ssl"
+
+
+
+  proj.user('puppet', is_system: true , homedir: '/opt/puppetlabs/server/data/puppetmaster')
+
   # Platform specific
   proj.setting(:cflags, "-I#{proj.includedir}")
   proj.setting(:ldflags, "-L#{proj.libdir} -Wl,-rpath=#{proj.libdir}")
@@ -29,9 +38,7 @@ project "puppet-agent-passenger" do |proj|
   proj.component "rubygem-passenger"
 
   proj.directory proj.prefix
-  proj.directory proj.sysconfdir
+  proj.directory "/etc/httpd/conf.d/"
   proj.directory proj.logdir
-  proj.directory proj.piddir
-  proj.directory proj.link_bindir
 
 end
