@@ -1,4 +1,4 @@
-project "puppet-agent-passenger" do |proj|
+project "puppet-master-passenger" do |proj|
   # Project level settings our components will care about
   proj.setting(:prefix, "/opt/puppetlabs/puppet")
   proj.setting(:sysconfdir, "/etc/puppetlabs")
@@ -14,7 +14,9 @@ project "puppet-agent-passenger" do |proj|
   proj.setting(:mandir, File.join(proj.datadir, "man"))
   proj.setting(:ruby_vendordir, File.join(proj.libdir, "ruby", "vendor_ruby"))
 
-  proj.description "A passenger package add on for puppet-agent for those who still need a ruby server."
+  proj.description "This is transistional package for those who still want or need a ruby-based Puppet master.
+     Passenger (and ruby servers for Puppet) will be completely removed in Puppet 5. "
+
   proj.version_from_git
   proj.license "ASL 2.0"
   proj.vendor "Puppet Labs <info@puppetlabs.com>"
