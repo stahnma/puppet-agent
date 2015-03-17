@@ -44,6 +44,6 @@ project "puppet-master-passenger" do |proj|
   proj.directory proj.prefix
   proj.directory "/etc/httpd/conf.d/"
   proj.directory "/opt/puppetlabs/server/data/puppetmaster" , owner: 'puppet', group: 'puppet'
-  proj.directory proj.logdir
+  proj.directory proj.logdir , owner: 'puppet', group: 'puppet'
 
 end
