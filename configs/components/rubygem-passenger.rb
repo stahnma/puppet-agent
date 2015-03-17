@@ -14,14 +14,11 @@ component "passenger" do |pkg, settings, platform|
     [
     "#{settings[:bindir]}/gem install --no-rdoc --no-ri --local #{gemname}-#{pkg.get_version}.gem",
     "/opt/puppetlabs/puppet/bin/passenger-install-apache2-module --languages ruby -a",
-    "rm -f /opt/puppetlabs/puppet/lib/ruby/gems/2.1.0/gems/passenger-5.0.2/helper-scripts/wsgi-loader.py /opt/puppetlabs/puppet/lib/ruby/gems/2.1.0/gems/passenger-5.0.2/test/stub/wsgi/passenger_wsgi.py",
-    "curl -O http://buildsources.delivery.puppetlabs.net/passenger-apache-conf",
-    "mv passenger-apache-conf /etc/httpd/conf.d/passenger.conf",
+    "rm -f /opt/puppetlabs/puppet/lib/ruby/gems/2.1.0/gems/#{gemname}-#{pkg.get_version}/helper-scripts/wsgi-loader.py /opt/puppetlabs/puppet/lib/ruby/gems/2.1.0/gems/#{gemname}-#{pkg.get_version}/test/stub/wsgi/passenger_wsgi.py",
     "mkdir -p /opt/puppetlabs/server/data/puppetmaster/public",
-    "pushd /opt/puppetlabs/server/data/puppetmaster/public",
-    "curl -O https://raw.githubusercontent.com/puppetlabs/puppet/master/ext/rack/config.ru",
-    "popd"
-
+    "mkdir -p /etc/httpd/conf.d/",
     ]
   end
+  pkg.install_file './config.ru', '/opt/puppetlabs/server/data/puppetmaster/config.ru', owner: 'puppet', group: 'puppet'
+  pkg.install_configfile './passenger-apache.conf', '/etc/httpd/conf.d/puppet-passenger.conf'
 end

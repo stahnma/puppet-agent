@@ -34,11 +34,14 @@ project "puppet-agent-passenger" do |proj|
   proj.setting(:ldflags, "-L#{proj.libdir} -Wl,-rpath=#{proj.libdir}")
 
   # First our stuff
+  proj.component 'configru'
+  proj.component 'passenger-apache-conf'
   proj.component "rubygem-rack"
   proj.component "rubygem-passenger"
 
   proj.directory proj.prefix
   proj.directory "/etc/httpd/conf.d/"
+  proj.directory "/opt/puppetlabs/server/data/puppetmaster" , owner: 'puppet', group: 'puppet'
   proj.directory proj.logdir
 
 end
