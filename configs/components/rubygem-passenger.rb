@@ -5,10 +5,16 @@ component "passenger" do |pkg, settings, platform|
   pkg.url "http://buildsources.delivery.puppetlabs.net/#{gemname}-#{pkg.get_version}.gem"
 
   pkg.build_requires "puppet-agent"
-  pkg.build_requires "httpd-devel"
-  pkg.build_requires "openssl-devel"
-  pkg.build_requires "curl-devel"
-  pkg.build_requires "gcc-c++"
+  if platform.is_el?
+    pkg.build_requires "httpd-devel"
+    pkg.build_requires "openssl-devel"
+    pkg.build_requires "curl-devel"
+    pkg.build_requires "gcc-c++"
+  else
+    pkg.build_requires "apache2-dev"
+    pkg.build_requires "libcurl-dev"
+    pkg.build_requires "libssl-dev"
+  end
 
   pkg.install do
     [
