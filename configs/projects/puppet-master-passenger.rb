@@ -23,9 +23,7 @@ project "puppet-master-passenger" do |proj|
   proj.homepage "https://www.puppetlabs.com"
 
   proj.requires "puppet-agent"
-  proj.requires "httpd"
   proj.requires "openssl"
-  proj.requires "mod_ssl"
 
 
 
