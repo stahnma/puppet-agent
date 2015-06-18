@@ -10,7 +10,17 @@ component "ruby" do |pkg, settings, platform|
   pkg.replaces 'pe-ruby-ldap'
   pkg.replaces 'pe-rubygem-gem2rpm'
 
-  pkg.apply_patch "resources/patches/ruby/libyaml_cve-2014-9130.patch"
+  shared='--enable-shared'
+  base = 'resources/patches/ruby'
+  pkg.apply_patch "#{base}/libyaml_cve-2014-9130.patch"
+  pkg.apply_patch "#{base}/ruby-2.1-cve-2015-4020.patch"
+
+  if platform.is_aix?
+    pkg.apply_patch "#{base}/aix_ruby_2.1_libpath_with_opt_dir.patch"
+    pkg.apply_patch "#{base}/aix_ruby_2.1_fix_proctitle.patch"
+    pkg.apply_patch "#{base}/aix_ruby_2.1_fix_make_test_failure.patch"
+    shared = '--disable-shared'
+  end
 
   pkg.build_requires "openssl"
 
@@ -21,10 +31,12 @@ component "ruby" do |pkg, settings, platform|
   end
 
   pkg.configure do
-    ["./configure \
+     [
+      "test -f '/opt/freeware/bin/granlib'  && chmod 755 /opt/freeware/bin/granlib || true",
+      "./configure \
         --prefix=#{settings[:prefix]} \
         --with-opt-dir=#{settings[:prefix]} \
-        --enable-shared \
+        #{shared} \
         --disable-install-rdoc"]
   end
 

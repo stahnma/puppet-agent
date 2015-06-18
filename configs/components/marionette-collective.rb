@@ -35,7 +35,9 @@ component "marionette-collective" do |pkg, settings, platform|
       pkg.install_service "ext/aio/redhat/mcollective.init", "ext/aio/redhat/mcollective.sysconfig", "mcollective"
     end
 
-    pkg.install_file "ext/aio/redhat/mcollective-sysv.logrotate", "/etc/logrotate.d/mcollective"
+    if platform.is_linux?
+      pkg.install_file "ext/aio/redhat/mcollective-sysv.logrotate", "/etc/logrotate.d/mcollective"
+    end
 
   when "launchd"
     pkg.install_service "ext/aio/osx/mcollective.plist", nil, "com.puppetlabs.mcollective"
@@ -57,7 +59,9 @@ component "marionette-collective" do |pkg, settings, platform|
   pkg.configfile File.join(settings[:sysconfdir], 'mcollective', 'client.cfg')
   pkg.configfile File.join(settings[:sysconfdir], 'mcollective', 'server.cfg')
   pkg.configfile File.join(settings[:sysconfdir], 'mcollective', 'facts.yaml')
-  pkg.configfile "/etc/logrotate.d/mcollective" unless platform.is_osx?
+  if platform.is_linux?
+    pkg.configfile "/etc/logrotate.d/mcollective"
+  end
 
   pkg.link "#{settings[:bindir]}/mco", "#{settings[:link_bindir]}/mco"
 end

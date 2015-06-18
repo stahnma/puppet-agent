@@ -41,10 +41,13 @@ project "puppet-agent" do |proj|
   proj.component "rubygem-deep-merge"
   proj.component "rubygem-net-ssh"
   proj.component "rubygem-hocon"
-  proj.component "ruby-shadow"
   proj.component "ruby-augeas"
   proj.component "openssl"
-  proj.component "virt-what"
+
+  unless proj.get_platform.is_aix?
+    proj.component "ruby-shadow"
+    proj.component "virt-what"
+  end
 
   # We only build ruby-selinux for EL 5-7
   if proj.get_platform.name =~ /^el-(5|6|7)-.*/

@@ -9,7 +9,7 @@ component "ruby-augeas" do |pkg, settings, platform|
   pkg.build_requires "augeas"
 
   pkg.build do
-    ["export PATH=$$PATH:/usr/local/bin", 
+    ["export PATH=/opt/freeware/bin:$$PATH:/usr/local/bin", 
      "export CONFIGURE_ARGS='--vendor'",
      "export CFLAGS=#{settings[:cflags]}",
      "export PKG_CONFIG_PATH=#{settings[:libdir]}/pkgconfig",

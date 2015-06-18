@@ -3,17 +3,32 @@ component "openssl" do |pkg, settings, platform|
   pkg.md5sum "ea48d0ad53e10f06a9475d8cdc209dfa"
   pkg.url "http://buildsources.delivery.puppetlabs.net/openssl-#{pkg.get_version}.tar.gz"
 
+
   pkg.replaces 'pe-openssl'
 
   ca_certfile = File.join(settings[:prefix], 'ssl', 'cert.pem')
 
+  preamble = ""
   case platform.name
   when /^osx-.*$/
     target = 'darwin64-x86_64-cc'
+    ldflags = "-Wl,-brtl $${LDFLAGS} -L/usr/linux/lib -L/opt/freeware/lib -L/usr/lib"
+    cflags = settings[:cflags]
+  when /^aix-.*$/
+    pkg.build_requires 'diffutils'
+    target = 'aix-gcc'
     ldflags = ''
+    cflags = "$${CFLAGS} -static-libgcc"
+    preamble = 'export PATH="/opt/freeware/bin:' + settings[:bindir] + ':$${PATH}"; export RM="rm -f"; export RANLIB="/opt/freeware/bin/granlib"; export AR="/opt/freeware/bin/ar"; export RANDFILE="/tmp/rpm-$$(od -N16 -tu /dev/random | awk \'NR==1 {print $$2} {}\')'
   else
     target = 'linux-elf'
     ldflags = "#{settings[:ldflags]} -Wl,-z,relro"
+    cflags = settings[:cflags]
+  end
+
+  if platform.is_aix?
+    pkg.apply_patch 'resources/patches/openssl/openssl-1.0.0l-respect-rpm_opt_flags.patch'
+    pkg.apply_patch 'resources/patches/openssl/openssl-1.0.0l-add-shell-to-engines_makefile.patch'
   end
 
   if platform.is_osx?
@@ -47,13 +62,16 @@ component "openssl" do |pkg, settings, platform|
       no-srp \
       no-ssl2 \
       no-ssl3 \
-      #{settings[:cflags]} \
+      #{cflags} \
       #{ldflags}"]
   end
 
   pkg.build do
-    ["#{platform[:make]} depend",
-    "#{platform[:make]}"]
+    [
+      "#{preamble}" ,
+      "#{platform[:make]} depend",
+      "#{platform[:make]}"
+    ]
   end
 
   pkg.install do

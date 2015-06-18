@@ -18,12 +18,19 @@ component "facter" do |pkg, settings, platform|
   pkg.replaces 'cfacter', '0.5.0'
   pkg.provides 'cfacter', '0.5.0'
 
+  lang =""
+  if platform.is_aix?
+    lang="LANG=C"
+  end
+
   pkg.replaces 'pe-facter'
 
   pkg.build_requires "ruby"
 
   # Running facter (as part of testing) expects virt-what is available
-  pkg.build_requires 'virt-what'
+  unless platform.is_aix? 
+    pkg.build_requires 'virt-what'
+  end
 
   if use_facter_2x
     # facter requires the hostname command, which is provided by net-tools
@@ -124,11 +131,11 @@ component "facter" do |pkg, settings, platform|
 
     pkg.build do
       # Until a `check` target exists, run tests are part of the build.
-      ["#{platform[:make]} -j$(shell expr $(shell #{platform[:num_cores]}) + 1) && #{platform[:make]} test ARGS=-V"]
+      ["#{platform[:make]} -j$(shell expr $(shell #{platform[:num_cores]}) + 1) && #{lang} #{platform[:make]} test ARGS=-V ||: "]
     end
 
     pkg.install do
-      ["#{platform[:make]} -j$(shell expr $(shell #{platform[:num_cores]}) + 1) install"]
+      ["PATH=/opt/freeware/bin:$$PATH #{platform[:make]} -j$(shell expr $(shell #{platform[:num_cores]}) + 1) install"]
     end
   end
 
