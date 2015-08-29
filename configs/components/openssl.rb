@@ -19,11 +19,15 @@ component "openssl" do |pkg, settings, platform|
 
     pkg.apply_patch 'resources/patches/openssl/add-shell-to-engines_makefile.patch'
     pkg.apply_patch 'resources/patches/openssl/openssl-1.0.0l-use-gcc-instead-of-makedepend.patch'
+  elsif platform.is_aix?
+    pkg.apply_patch 'resources/patches/openssl/add-shell-to-engines_makefile.patch'
+    pkg.apply_patch 'resources/patches/openssl/openssl-1.0.0l-use-gcc-instead-of-makedepend.patch'
   elsif platform.is_osx?
     pkg.build_requires 'makedepend'
   end
 
   ca_certfile = File.join(settings[:prefix], 'ssl', 'cert.pem')
+  preamble = ""
 
   if platform.is_osx?
     pkg.environment "PATH" => "/opt/pl-build-tools/bin:$$PATH:/usr/local/bin"
@@ -41,6 +45,13 @@ component "openssl" do |pkg, settings, platform|
 
     ldflags = "-R/opt/pl-build-tools/#{settings[:platform_triple]}/lib -Wl,-rpath=#{settings[:libdir]} -L/opt/pl-build-tools/#{settings[:platform_triple]}/lib"
     cflags = "#{settings[:cflags]} -fPIC"
+  elsif platform.is_aix?
+    pkg.build_requires "http://pl-build-tools.delivery.puppetlabs.net/aix/#{platform.os_version}/ppc/pl-gcc-5.2.0-1.aix#{platform.os_version}.ppc.rpm"
+    target = 'aix-gcc'
+    ldflags = ''
+    cflags = "$${CFLAGS} -static-libgcc"
+    pkg.environment "CC" => "/opt/pl-build-tools/bin/gcc"
+    preamble = "slibclean"
   else
     pkg.environment "PATH" => "/opt/pl-build-tools/bin:$$PATH:/usr/local/bin"
     if platform.architecture =~ /86$/
@@ -93,7 +104,8 @@ component "openssl" do |pkg, settings, platform|
   end
 
   pkg.install do
-    ["#{platform[:make]} INSTALL_PREFIX=/ install"]
+    [ "#{preamble}",
+     "#{platform[:make]} INSTALL_PREFIX=/ install"]
   end
 
   pkg.install_file "LICENSE", "#{settings[:prefix]}/share/doc/openssl-#{pkg.get_version}/LICENSE"

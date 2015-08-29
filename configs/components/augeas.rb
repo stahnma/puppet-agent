@@ -10,7 +10,23 @@ component 'augeas' do |pkg, settings, platform|
     pkg.apply_patch 'resources/patches/augeas/augeas-1.2.0-fix-services-sles10.patch'
   end
 
-  if platform.is_rpm?
+  if platform.is_aix?
+    pkg.build_requires "http://pl-build-tools.delivery.puppetlabs.net/aix/#{platform.os_version}/ppc/pl-gcc-5.2.0-1.aix#{platform.os_version}.ppc.rpm"
+    pkg.build_requires "http://osmirror.delivery.puppetlabs.net/AIX_MIRROR/pkg-config-0.19-6.aix5.2.ppc.rpm"
+    pkg.build_requires "http://osmirror.delivery.puppetlabs.net/AIX_MIRROR/libxml2-2.6.21-4.aix5.2.ppc.rpm"
+    pkg.build_requires "http://osmirror.delivery.puppetlabs.net/AIX_MIRROR/libxml2-devel-2.6.21-4.aix5.2.ppc.rpm"
+    pkg.environment "CXX" => "/opt/pl-build-tools/bin/g++"
+    pkg.environment "CC" => "/opt/pl-build-tools/bin/gcc"
+    if platform.name =~ /6.1|7.1/
+      pkg.build_requires "http://osmirror.delivery.puppetlabs.net/AIX_MIRROR/readline-6.1-2.aix6.1.ppc.rpm"
+      pkg.build_requires "http://osmirror.delivery.puppetlabs.net/AIX_MIRROR/readline-devel-6.1-2.aix6.1.ppc.rpm"
+    else
+      pkg.build_requires "http://osmirror.delivery.puppetlabs.net/AIX_MIRROR/readline-4.3-2.aix5.1.ppc.rpm"
+      pkg.build_requires "http://osmirror.delivery.puppetlabs.net/AIX_MIRROR/readline-devel-4.3-2.aix5.1.ppc.rpm"
+    end
+  end
+
+  if platform.is_rpm? and not platform.is_aix?
     pkg.build_requires 'libxml2-devel'
     pkg.requires 'libxml2'
 

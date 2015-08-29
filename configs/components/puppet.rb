@@ -35,6 +35,8 @@ component "puppet" do |pkg, settings, platform|
     pkg.install_service "ext/osx/puppet.plist", nil, "com.puppetlabs.puppet"
   when "smf"
     pkg.install_service "ext/solaris/smf/puppet.xml", "ext/solaris/smf/puppet"
+  when "aix"
+    pkg.aix_service "/opt/puppetlabs/puppet/bin/ruby -s puppet -u root -a '/opt/puppetlabs/bin/puppet agent --no-daemonize'"
   else
     fail "need to know where to put service files"
   end
