@@ -6,6 +6,11 @@ component "libxml2" do |pkg, settings, platform|
   if platform.is_aix?
     pkg.build_requires "http://pl-build-tools.delivery.puppetlabs.net/aix/#{platform.os_version}/ppc/pl-gcc-5.2.0-1.aix#{platform.os_version}.ppc.rpm"
     pkg.environment "PATH" => "/opt/pl-build-tools/bin:$$PATH"
+  elsif platform.is_solaris?
+    pkg.build_requires "pl-gcc-#{platform.architecture}"
+    pkg.environment "PATH" => "/opt/pl-build-tools/bin:$$PATH:/usr/local/bin:/usr/ccs/bin:/usr/sfw/bin:#{settings[:bindir]}"
+    pkg.environment "CFLAGS" => settings[:cflags]
+    pkg.environment "LDFLAGS" => settings[:ldflags]
   else
     pkg.build_requires "pl-gcc"
     pkg.build_requires "make"
