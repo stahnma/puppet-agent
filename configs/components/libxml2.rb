@@ -7,7 +7,6 @@ component "libxml2" do |pkg, settings, platform|
     pkg.build_requires "http://pl-build-tools.delivery.puppetlabs.net/aix/#{platform.os_version}/ppc/pl-gcc-5.2.0-1.aix#{platform.os_version}.ppc.rpm"
     pkg.environment "PATH" => "/opt/pl-build-tools/bin:$$PATH"
   elsif platform.is_solaris?
-    pkg.build_requires "pl-gcc-#{platform.architecture}"
     pkg.environment "PATH" => "/opt/pl-build-tools/bin:$$PATH:/usr/local/bin:/usr/ccs/bin:/usr/sfw/bin:#{settings[:bindir]}"
     pkg.environment "CFLAGS" => settings[:cflags]
     pkg.environment "LDFLAGS" => settings[:ldflags]
@@ -18,6 +17,9 @@ component "libxml2" do |pkg, settings, platform|
     pkg.environment "CFLAGS" => "$${CFLAGS} -fPIC"
   end
 
+  if platform.name =~ /solaris-11/
+    pkg.build_requires "pl-gcc-#{platform.architecture}"
+  end
 
   pkg.configure do
     ["./configure --prefix=#{settings[:prefix]} --without-python"]
