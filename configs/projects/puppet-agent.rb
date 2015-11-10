@@ -93,6 +93,7 @@ project "puppet-agent" do |proj|
   proj.component "openssl"
   proj.component "puppet-ca-bundle"
   proj.component "libxml2"
+  proj.component "libxslt"
 
   # These utilites don't really work on unix
   if platform.is_linux?
