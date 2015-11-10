@@ -4,7 +4,7 @@ component "libxslt" do |pkg, settings, platform|
   pkg.url "http://buildsources.delivery.puppetlabs.net/#{pkg.get_name}-#{pkg.get_version}.tar.gz"
 
   pkg.build_requires "libxml2"
-  
+
   if platform.is_aix?
     pkg.build_requires "http://pl-build-tools.delivery.puppetlabs.net/aix/#{platform.os_version}/ppc/pl-gcc-5.2.0-1.aix#{platform.os_version}.ppc.rpm"
     pkg.environment "PATH" => "/opt/pl-build-tools/bin:$$PATH"

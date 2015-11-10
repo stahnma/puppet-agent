@@ -30,7 +30,7 @@ index 2a021ea..89c6725 100755
 +#fi
 +# { $as_echo "$as_me:${as_lineno-$LINENO}: result: $VERSION_SCRIPT_FLAGS" >&5
 +# $as_echo "$VERSION_SCRIPT_FLAGS" >&6; }
- 
+
   if test "$VERSION_SCRIPT_FLAGS" != none; then
    USE_VERSION_SCRIPT_TRUE=
 @@ -16301,4 +16301,3 @@ if test -n "$ac_unrecognized_opts" && test "$enable_option_checking" != no; then
@@ -59,6 +59,6 @@ index fc8d5a8..4ff9a42 100644
  AC_MSG_RESULT([$VERSION_SCRIPT_FLAGS])
  AC_SUBST(VERSION_SCRIPT_FLAGS)
  AM_CONDITIONAL([USE_VERSION_SCRIPT], [test "$VERSION_SCRIPT_FLAGS" != none])
--- 
+--
 2.6.3
 
