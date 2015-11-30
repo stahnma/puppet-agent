@@ -89,28 +89,28 @@ project "puppet-agent" do |proj|
   end
 
   # First our stuff
-  proj.component "puppet"
-  proj.component "facter"
-  proj.component "hiera"
-  proj.component "marionette-collective"
-  proj.component "cpp-pcp-client"
-  proj.component "pxp-agent"
+#  proj.component "puppet"
+#  proj.component "facter"
+#  proj.component "hiera"
+#  proj.component "marionette-collective"
+#  proj.component "cpp-pcp-client"
+#  proj.component "pxp-agent"
 
-  # Then the dependencies
-  proj.component "augeas"
-  # Curl is only needed for compute clusters (GCE, EC2); so rpm, deb, and Windows
-  proj.component "curl" if platform.is_linux?
-  proj.component "ruby"
-  proj.component "ruby-stomp"
-  proj.component "rubygem-deep-merge"
-  proj.component "rubygem-net-ssh"
-  proj.component "rubygem-hocon"
-  proj.component "ruby-shadow" unless platform.is_aix?
-  proj.component "ruby-augeas"
-  proj.component "openssl"
-  proj.component "puppet-ca-bundle"
+#  # Then the dependencies
+#  proj.component "augeas"
+#  # Curl is only needed for compute clusters (GCE, EC2); so rpm, deb, and Windows
+#  proj.component "curl" if platform.is_linux?
+#  proj.component "ruby"
+#  proj.component "ruby-stomp"
+#  proj.component "rubygem-deep-merge"
+#  proj.component "rubygem-net-ssh"
+#  proj.component "rubygem-hocon"
+#  proj.component "ruby-shadow" unless platform.is_aix?
+#  proj.component "ruby-augeas"
+#  proj.component "openssl"
+#  proj.component "puppet-ca-bundle"
   proj.component "libxml2"
-  proj.component "libxslt"
+  #proj.component "libxslt"
 
   # These utilites don't really work on unix
   if platform.is_linux?
@@ -119,24 +119,24 @@ project "puppet-agent" do |proj|
     proj.component "shellpath"
   end
 
-  if platform.is_solaris? || platform.name =~ /^el-4/ || platform.is_aix?
-    proj.component "runtime"
-  end
+#  if platform.is_solaris? || platform.name =~ /^el-4/ || platform.is_aix?
+#    proj.component "runtime"
+#  end
 
   # Needed to avoid using readline on solaris and aix
-  if platform.is_solaris? || platform.is_aix?
-    proj.component "libedit"
-  end
+#  if platform.is_solaris? || platform.is_aix?
+#    proj.component "libedit"
+#  end
 
   # Components only applicable on OSX
-  if platform.is_osx?
-    proj.component "cfpropertylist"
-  end
+#  if platform.is_osx?
+#    proj.component "cfpropertylist"
+#  end
 
   # We only build ruby-selinux for EL 5-7
-  if platform.name =~ /^el-(5|6|7)-.*/ || platform.is_fedora?
-    proj.component "ruby-selinux"
-  end
+#  if platform.name =~ /^el-(5|6|7)-.*/ || platform.is_fedora?
+#    proj.component "ruby-selinux"
+#  end
 
   proj.directory proj.install_root
   proj.directory proj.prefix

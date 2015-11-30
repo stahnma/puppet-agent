@@ -4,7 +4,7 @@ component "libxml2" do |pkg, settings, platform|
   pkg.url "http://buildsources.delivery.puppetlabs.net/#{pkg.get_name}-#{pkg.get_version}.tar.gz"
 
   if platform.is_aix?
-    pkg.build_requires "http://pl-build-tools.delivery.puppetlabs.net/aix/#{platform.os_version}/ppc/pl-gcc-5.2.0-1.aix#{platform.os_version}.ppc.rpm"
+#    pkg.build_requires "http://pl-build-tools.delivery.puppetlabs.net/aix/#{platform.os_version}/ppc/pl-gcc-5.2.0-1.aix#{platform.os_version}.ppc.rpm"
     pkg.environment "PATH" => "/opt/pl-build-tools/bin:$$PATH"
   elsif platform.is_solaris?
     pkg.environment "PATH" => "/opt/pl-build-tools/bin:$$PATH:/usr/local/bin:/usr/ccs/bin:/usr/sfw/bin:#{settings[:bindir]}"
@@ -21,19 +21,20 @@ component "libxml2" do |pkg, settings, platform|
     pkg.build_requires "pl-gcc-#{platform.architecture}"
   end
 
-  pkg.configure do
-    ["./configure --prefix=#{settings[:prefix]} --without-python #{settings[:host]}"]
-  end
+#  pkg.configure do
+#    ["./configure --prefix=#{settings[:prefix]} --without-python #{settings[:host]}"]
+#  end
 
-  pkg.build do
-    ["#{platform[:make]} VERBOSE=1 -j$(shell expr $(shell #{platform[:num_cores]}) + 1)"]
-  end
+#  pkg.build do
+#    ["#{platform[:make]} VERBOSE=1 -j$(shell expr $(shell #{platform[:num_cores]}) + 1)"]
+#  end
 
   pkg.install do
     [
-      "#{platform[:make]} VERBOSE=1 -j$(shell expr $(shell #{platform[:num_cores]}) + 1) install",
-      "rm -rf #{settings[:datadir]}/gtk-doc",
-      "rm -rf #{settings[:datadir]}/doc/#{pkg.get_name}*"
+  #    "#{platform[:make]} VERBOSE=1 -j$(shell expr $(shell #{platform[:num_cores]}) + 1) install",
+  #    "rm -rf #{settings[:datadir]}/gtk-doc",
+  #    "rm -rf #{settings[:datadir]}/doc/#{pkg.get_name}*"
+       "echo FOOBAR > #{settings[:prefix]}/#{pkg.get_name}"
     ]
   end
 
