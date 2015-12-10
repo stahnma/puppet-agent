@@ -12,6 +12,7 @@ end
 
 gem 'vanagon', *vanagon_location_for(ENV['VANAGON_LOCATION'] || '~> 0.4.1')
 gem 'packaging', '~> 0.4', :github => 'puppetlabs/packaging'
+gem 'lock_manager', :path => '/home/stahnma/lock_manager'
 gem 'rake'
 gem 'json'
 gem 'rubocop', "~> 0.34.2"
