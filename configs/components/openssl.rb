@@ -14,12 +14,15 @@ component "openssl" do |pkg, settings, platform|
     pkg.build_requires 'imake' if platform.name =~ /^el/
     pkg.build_requires 'xorg-x11-util-devel' if platform.name =~ /^sles/
     pkg.build_requires 'xutils-dev' if platform.is_huaweios?
+  elsif platform.name =~ /ubuntu-16.04/
+    pkg.build_requires 'binutils'
+    pkg.build_requires 'gcc'
   elsif platform.is_linux?
     pkg.build_requires 'pl-binutils'
     pkg.build_requires 'pl-gcc'
     if platform.name =~ /el-4/
       pkg.build_requires 'runtime'
-    end
+  end
   elsif platform.is_solaris?
     if platform.os_version == "10"
       pkg.build_requires "http://pl-build-tools.delivery.puppetlabs.net/solaris/10/pl-gcc-4.8.2-1.#{platform.architecture}.pkg.gz"

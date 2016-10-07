@@ -27,6 +27,11 @@ component "libxslt" do |pkg, settings, platform|
   elsif platform.is_osx?
     pkg.environment "LDFLAGS" => settings[:ldflags]
     pkg.environment "CFLAGS" => settings[:cflags]
+  elsif platform.name =~ /ubuntu-16.04/
+    pkg.build_requires "gcc"
+    pkg.build_requires "make"
+    pkg.environment "LDFLAGS" => settings[:ldflags]
+    pkg.environment "CFLAGS" => settings[:cflags]
   else
     pkg.build_requires "pl-gcc"
     pkg.build_requires "make"

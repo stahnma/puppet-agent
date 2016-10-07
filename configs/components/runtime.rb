@@ -13,6 +13,8 @@ component "runtime" do |pkg, settings, platform|
   elsif platform.is_windows?
     # We only need zlib because curl is dynamically linking against zlib
     pkg.build_requires "pl-zlib-#{platform.architecture}"
+  elsif platform.name =~ /ubuntu-16.04/
+    # Nothing going on here
   else
     pkg.build_requires "pl-gcc"
   end
@@ -50,6 +52,9 @@ component "runtime" do |pkg, settings, platform|
     pkg.install_file "#{settings[:tools_root]}/bin/libgdbm_compat-4.dll", "#{settings[:ruby_bindir]}/libgdbm_compat-4.dll"
     pkg.install_file "#{settings[:tools_root]}/bin/libiconv-2.dll", "#{settings[:ruby_bindir]}/libiconv-2.dll"
     pkg.install_file "#{settings[:tools_root]}/bin/libffi-6.dll", "#{settings[:ruby_bindir]}/libffi-6.dll"
+
+  elsif platform.name =~ /ubuntu-16.04/
+    # Nothing to see here, using system tools
 
   else # Linux and Solaris systems
     pkg.install do

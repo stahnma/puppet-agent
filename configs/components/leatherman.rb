@@ -23,6 +23,11 @@ component "leatherman" do |pkg, settings, platform|
     pkg.build_requires "cmake"
     pkg.build_requires "pl-toolchain-#{platform.architecture}"
     pkg.build_requires "pl-boost-#{platform.architecture}"
+  elsif platform.name =~ /ubuntu-16.04/
+    pkg.build_requires "gcc"
+    pkg.build_requires "cmake"
+    pkg.build_requires "libboost-all-dev"
+    pkg.add_source "file:///resources/files/debian-native-toolchain.cmake"
   else
     pkg.build_requires "pl-gcc"
     pkg.build_requires "pl-cmake"
@@ -47,6 +52,9 @@ component "leatherman" do |pkg, settings, platform|
     toolchain = ""
     cmake = "/usr/local/bin/cmake"
     special_flags = "-DCMAKE_CXX_FLAGS='#{settings[:cflags]}'"
+  elsif platform.name =~ /ubuntu-16.04/
+    toolchain = "-DCMAKE_TOOLCHAIN_FILE=$(workdir)/debian-native-toolchain.cmake"
+    cmake = "cmake"
   elsif platform.is_cross_compiled_linux?
     ruby = "#{settings[:host_ruby]} -r#{settings[:datadir]}/doc/rbconfig.rb"
     toolchain = "-DCMAKE_TOOLCHAIN_FILE=/opt/pl-build-tools/#{settings[:platform_triple]}/pl-build-toolchain.cmake"

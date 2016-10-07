@@ -41,6 +41,12 @@ component "cpp-pcp-client" do |pkg, settings, platform|
 
     cmake = "C:/ProgramData/chocolatey/bin/cmake.exe -G \"MinGW Makefiles\""
     toolchain = "-DCMAKE_TOOLCHAIN_FILE=#{settings[:tools_root]}/pl-build-toolchain.cmake"
+  elsif platform.name =~ /ubuntu-16.04/
+    pkg.build_requires "gcc"
+    pkg.build_requires "cmake"
+    pkg.build_requires "libboost-all-dev"
+    toolchain = "-DCMAKE_TOOLCHAIN_FILE=$(workdir)/debian-native-toolchain.cmake"
+    cmake = "cmake"
   else
     pkg.build_requires "pl-gcc"
     pkg.build_requires "pl-cmake"
