@@ -66,7 +66,7 @@ component "facter" do |pkg, settings, platform|
     pkg.build_requires "cmake"
     pkg.build_requires "libboost-all-dev"
     pkg.build_requires "libyaml-cpp-dev"
-    toolchain = "-DCMAKE_TOOLCHAIN_FILE=$(workdir)/debian-native-toolchain.cmake"
+    toolchain = "-DCMAKE_TOOLCHAIN_FILE=$(workdir)/debian-native-toolchain.cmake.txt"
     cmake = "cmake"
   else
     pkg.build_requires "pl-gcc"

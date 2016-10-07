@@ -45,7 +45,7 @@ component "cpp-pcp-client" do |pkg, settings, platform|
     pkg.build_requires "gcc"
     pkg.build_requires "cmake"
     pkg.build_requires "libboost-all-dev"
-    toolchain = "-DCMAKE_TOOLCHAIN_FILE=$(workdir)/debian-native-toolchain.cmake"
+    toolchain = "-DCMAKE_TOOLCHAIN_FILE=$(workdir)/debian-native-toolchain.cmake.txt"
     cmake = "cmake"
   else
     pkg.build_requires "pl-gcc"
