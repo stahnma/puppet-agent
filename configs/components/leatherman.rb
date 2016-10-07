@@ -27,7 +27,7 @@ component "leatherman" do |pkg, settings, platform|
     pkg.build_requires "gcc"
     pkg.build_requires "cmake"
     pkg.build_requires "libboost-all-dev"
-    pkg.add_source "file:///resources/files/debian-native-toolchain.cmake.txt"
+    pkg.add_source "file://resources/files/debian-native-toolchain.cmake.txt"
   else
     pkg.build_requires "pl-gcc"
     pkg.build_requires "pl-cmake"
