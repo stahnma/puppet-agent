@@ -45,14 +45,14 @@ component "cpp-pcp-client" do |pkg, settings, platform|
 
     cmake = "C:/ProgramData/chocolatey/bin/cmake.exe -G \"MinGW Makefiles\""
     toolchain = "-DCMAKE_TOOLCHAIN_FILE=#{settings[:tools_root]}/pl-build-toolchain.cmake"
-  elsif platform.name =~ /debian-9/
+  elsif platform.name =~ /debian-9|ubuntu-18.04/
     cmake = "cmake"
     toolchain = "-DCMAKE_TOOLCHAIN_FILE=#{settings[:datadir]}/doc/debian-#{platform.architecture}-toolchain"
   elsif platform.is_cisco_wrlinux?
     platform_flags = "-DLEATHERMAN_USE_LOCALES=OFF"
   end
 
-  if platform.name =~ /debian-9/
+  if platform.name =~ /debian-9|ubuntu-18.04/
     boost_args = "-DBOOST_LIBRARYDIR=/usr/lib/#{settings[:platform_triple]}/lib"
     boost_static = "OFF"
   else

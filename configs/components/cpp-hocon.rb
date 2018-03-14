@@ -13,7 +13,7 @@ component "cpp-hocon" do |pkg, settings, platform|
     special_flags = "-DCMAKE_CXX_FLAGS='#{settings[:cflags]}'"
   elsif platform.is_cross_compiled_linux?
     # Debian 9 is not using pl-build-tools
-    if platform.name =~ /debian-9/
+    if platform.name =~ /debian-9|ubuntu-18.04/
       toolchain = "-DCMAKE_TOOLCHAIN_FILE=#{settings[:datadir]}/doc/debian-#{platform.architecture}-toolchain"
       cmake = "/usr/bin/cmake"
     else
@@ -34,7 +34,7 @@ component "cpp-hocon" do |pkg, settings, platform|
     cmake = "C:/ProgramData/chocolatey/bin/cmake.exe -G \"MinGW Makefiles\""
     toolchain = "-DCMAKE_TOOLCHAIN_FILE=#{settings[:tools_root]}/pl-build-toolchain.cmake"
   else
-    if platform.name =~ /debian-9/
+    if platform.name =~ /debian-9|ubuntu-18.04/
       toolchain = "-DCMAKE_TOOLCHAIN_FILE=#{settings[:datadir]}/doc/debian-#{platform.architecture}-toolchain"
       cmake = "cmake"
     else
@@ -47,7 +47,7 @@ component "cpp-hocon" do |pkg, settings, platform|
     end
   end
 
-  if platform.name =~ /debian-9/
+  if platform.name =~ /debian-9|ubuntu-18.04/
     boost_args = "-DBOOST_LIBRARYDIR=/usr/lib/#{settings[:platform_triple]}/lib"
     boost_static = "OFF"
   else

@@ -11,7 +11,7 @@ component "libwhereami" do |pkg, settings, platform|
     toolchain = ""
     cmake = "/usr/local/bin/cmake"
     special_flags = "-DCMAKE_CXX_FLAGS='#{settings[:cflags]}'"
-  elsif platform.name =~ /debian-9/
+  elsif platform.name =~ /debian-9|ubuntu-18.04/
     toolchain = "-DCMAKE_TOOLCHAIN_FILE=#{settings[:datadir]}/doc/debian-#{platform.architecture}-toolchain"
     cmake = "/usr/bin/cmake"
   elsif platform.is_cross_compiled_linux?
@@ -39,7 +39,7 @@ component "libwhereami" do |pkg, settings, platform|
     end
   end
 
-  if platform.name =~ /debian-9/
+  if platform.name =~ /debian-9|ubuntu-18.04/
     boost_args = "-DBOOST_LIBRARYDIR=/usr/lib/#{settings[:platform_triple]}/lib"
     boost_static = "OFF"
     cmake = "cmake"

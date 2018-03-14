@@ -38,7 +38,7 @@ component "libxslt" do |pkg, settings, platform|
   end
 
   if platform.is_cross_compiled_linux? || platform.name =~ /solaris-11/
-    pkg.build_requires "pl-gcc-#{platform.architecture}" unless platform.name =~ /debian-9/
+    pkg.build_requires "pl-gcc-#{platform.architecture}" unless platform.name =~ /(debian-9|ubuntu-18.04)/
   end
 
   pkg.configure do

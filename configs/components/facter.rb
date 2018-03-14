@@ -22,7 +22,7 @@ component "facter" do |pkg, settings, platform|
   end
 
   pkg.build_requires 'leatherman'
-  pkg.build_requires 'runtime' unless platform.name =~ /debian-9/
+  pkg.build_requires 'runtime' unless platform.name =~ /debian-9|ubuntu-18.04/
   pkg.build_requires 'cpp-hocon'
   pkg.build_requires 'libwhereami'
 
@@ -44,7 +44,7 @@ component "facter" do |pkg, settings, platform|
     pkg.build_requires "yaml-cpp"
   elsif platform.name =~ /solaris-10/
     pkg.build_requires "http://pl-build-tools.delivery.puppetlabs.net/solaris/10/pl-yaml-cpp-0.5.1.#{platform.architecture}.pkg.gz"
-  elsif platform.name =~ /debian-9/
+  elsif platform.name =~ /debian-9|ubuntu-18.04/
     pkg.build_requires "libyaml-cpp-dev:#{platform.architecture}"
     pkg.requires "libyaml-cpp0.5v5"
     pkg.requires "libboost-date-time1.62.0"
@@ -61,7 +61,7 @@ component "facter" do |pkg, settings, platform|
     pkg.build_requires "http://pl-build-tools.delivery.puppetlabs.net/aix/#{platform.os_version}/ppc/pl-yaml-cpp-0.5.1-1.aix#{platform.os_version}.ppc.rpm"
   elsif platform.is_windows?
     pkg.build_requires "pl-yaml-cpp-#{platform.architecture}"
-  elsif platform.name =~ /debian-9/
+  elsif platform.name =~ /debian-9|ubuntu-18.04/
     pkg.build_requires "cmake"
   else
     pkg.build_requires "pl-yaml-cpp"
@@ -77,6 +77,9 @@ component "facter" do |pkg, settings, platform|
   when /(debian-(7|8)|ubuntu-14)/
     pkg.build_requires 'openjdk-7-jdk'
     java_home = "/usr/lib/jvm/java-7-openjdk-#{platform.architecture}"
+  when /ubuntu-18.04/
+    pkg.build_requires 'openjdk-10-jdk'
+    java_home = "/usr/lib/jvm/java-10-openjdk-#{platform.architecture}"
   when /(debian-9|ubuntu-(15|16))/
     pkg.build_requires 'openjdk-8-jdk'
     java_home = "/usr/lib/jvm/java-8-openjdk-#{platform.architecture}"
@@ -165,7 +168,7 @@ component "facter" do |pkg, settings, platform|
     toolchain = "-DCMAKE_TOOLCHAIN_FILE=#{settings[:tools_root]}/pl-build-toolchain.cmake"
     special_flags = "-DCMAKE_INSTALL_PREFIX=#{settings[:facter_root]} \
                      -DRUBY_LIB_INSTALL=#{settings[:facter_root]}/lib "
-  elsif platform.name =~ /debian-9/
+  elsif platform.name =~ /debian-9|ubuntu-18.04/
     cmake = "cmake"
     toolchain = "-DCMAKE_TOOLCHAIN_FILE=#{settings[:datadir]}/doc/debian-#{platform.architecture}-toolchain"
 
@@ -188,7 +191,7 @@ component "facter" do |pkg, settings, platform|
                        -DRUBY_LIB_INSTALL=#{settings[:ruby_vendordir]}"
   end
 
-  if platform.name =~ /debian-9/
+  if platform.name =~ /debian-9|ubuntu-18.04/
     boost_args = "-DBOOST_LIBRARYDIR=/usr/lib/#{settings[:platform_triple]}/lib"
     boost_static = "OFF"
     yamlcpp_static = "OFF"
@@ -234,7 +237,7 @@ component "facter" do |pkg, settings, platform|
   end
 
   tests = []
-  unless platform.is_windows? || platform.is_cross_compiled_linux? || platform.architecture == 'sparc' || platform.name =~ /debian-9/
+  unless platform.is_windows? || platform.is_cross_compiled_linux? || platform.architecture == 'sparc' || platform.name =~ /debian-9|ubuntu-18.04/
     # Check that we're not linking against system libstdc++ and libgcc_s
     tests = [
       "#{ldd} lib/libfacter.so",

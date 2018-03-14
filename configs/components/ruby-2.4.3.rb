@@ -135,7 +135,7 @@ component "ruby-2.4.3" do |pkg, settings, platform|
   # Cross-compiles require a hand-built rbconfig from the target system as does Solaris, AIX and Windies
   if platform.is_cross_compiled_linux? || platform.is_solaris? || platform.is_aix? || platform.is_windows?
     pkg.add_source "file://resources/files/ruby_243/rbconfig/rbconfig-#{settings[:platform_triple]}.rb"
-    pkg.build_requires 'runtime' if platform.is_cross_compiled_linux? && !platform.name =~ /debian-9/
+    pkg.build_requires 'runtime' if platform.is_cross_compiled_linux? && !platform.name =~ /(debian-9|ubuntu-18.04)/
   end
 
   if settings[:vendor_openssl] == "no"
@@ -308,7 +308,7 @@ component "ruby-2.4.3" do |pkg, settings, platform|
     sed = "sed"
     sed = "gsed" if platform.is_solaris?
     sed = "/opt/freeware/bin/sed" if platform.is_aix?
-    if platform.name =~ /debian-9/
+    if platform.name =~ /(debian-9|ubuntu-18.04)/
       # Here we don't overwrite the rbconfig, because the one we create while
       # building contains exactly what we want (e.g. system compiler, etc)
       pkg.install do
